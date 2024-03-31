@@ -1,0 +1,5 @@
+streamlit
+requests
+streamlit_navigation_bar
+numpy
+pandas

@@ -1,6 +1,3 @@
 streamlit
 requests
 streamlit_navigation_bar
-numpy
-pandas
-pandas --upgrade --force-reinstall

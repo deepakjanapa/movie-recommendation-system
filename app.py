@@ -84,7 +84,7 @@ def sidebar(credentials2):
     # Count the number of users
     total_users = len(credentials2)
     st.sidebar.write("# :red[Total Users Count: ]", total_users)
-    
+
     st.sidebar.title(":red[Account Info]")
     st.sidebar.markdown(f"**Username:** {st.session_state.username}")
     if st.session_state.username in credentials2:
@@ -92,7 +92,7 @@ def sidebar(credentials2):
         st.sidebar.markdown(f"**Name:** {user_info['name']}")
         st.sidebar.markdown(f"**Phone Number:** {user_info['phone_number']}")
         st.sidebar.markdown(f"**Email:** {user_info['email']}")
-        
+
         profile_picture_path = user_info.get("profile_picture")
         if profile_picture_path and os.path.exists(profile_picture_path):
             with open(profile_picture_path, "rb") as file:
@@ -135,7 +135,7 @@ def main():
             login(credentials2)
         elif selection == "Sign Up":
             signup(credentials2)
-            
+
     else:  
         ###############################################################################################################################################
 
@@ -167,7 +167,7 @@ def main():
             poster_path = data['poster_path']
             full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
             return full_path
-        
+
         def fetch_movie_details(movie_id):
             url = "https://api.themoviedb.org/3/movie/{}?api_key=c1f2ed1b9413000a1a7141f5db0b80ca&language=en-US".format(movie_id)
             data = requests.get(url)
@@ -196,7 +196,7 @@ def main():
 
         ###############################################################################################################################################
         if selected_page == "Movie Recommendation System":
-            
+
             st.title("Browse Movies")
 
             # Display posters and titles in grid layout
@@ -345,8 +345,8 @@ def main():
 
         elif selected_page == "Search":
             st.header('Search for similar movies')
-            movies = pickle.load(open(r'artifacts\movie_list.pkl','rb'))
-            similarity = pickle.load(open(r'similarity.pkl','rb'))
+            movies = pickle.load(open("artifacts/movie_list.pkl",'rb'))
+            similarity = pickle.load(open("similarity.pkl",'rb'))
 
             movie_list = movies['title'].values
             selected_movie = st.selectbox(
@@ -377,7 +377,7 @@ def main():
 
         elif selected_page == "Popularity":             
             # Load popularity models
-            with open(r'artifacts\popularity_models.pkl', 'rb') as f:
+            with open("artifacts/popularity_models.pkl", 'rb') as f:
                 popularity_models = pickle.load(f)
 
             st.title("Popularity Based Movie Recommendation")
@@ -387,10 +387,10 @@ def main():
             if st.button("Check Popularity"):
                 st.header(f"Top Popular Movies in {selected_year}:")
                 top_movies = popularity_models[selected_year]
-                
+
                 # Divide the screen into columns for displaying side by side
                 cols = st.columns(5)
-                
+
                 for col, (_, row) in zip(cols, top_movies.iterrows()):
                     col.image(fetch_poster(row['id']), caption=f"{row['original_title']} - Popularity: {row['popularity']}", use_column_width=True)
 
@@ -398,8 +398,8 @@ def main():
 
         elif selected_page == "Favorites":
             st.header('Search Movies to Add to Favorites')
-            movies = pickle.load(open(r'\artifacts\movie_list.pkl','rb'))
-            similarity = pickle.load(open(r'similarity.pkl','rb'))
+            movies = pickle.load(open("artifacts/movie_list.pkl",'rb'))
+            similarity = pickle.load(open("artifacts/similarity.pkl",'rb'))
 
             movie_list = movies['title'].values
             selected_movie = st.selectbox(
@@ -414,7 +414,7 @@ def main():
                     st.success("Movie added to favorites!")
                 else:
                     st.warning("This movie is already in your favorites.")
-            
+
             # Display Favorites
             st.header("Favorites")
             favorites = st.session_state.favorites
@@ -443,12 +443,12 @@ def main():
                     credentials2[st.session_state.username]["favorites"] = st.session_state.favorites
                     save_credentials2(credentials2)
                     st.success("Movie removed from favorites!")
-                
+
                 # Rerun to display the remaining favorites
                 st.experimental_rerun()
-                
+
         ###############################################################################################################################################
-        
+
         elif selected_page == "Contact":
             st.write("# Creators")
             cont = st.columns(3)
@@ -501,10 +501,10 @@ def main():
                     st.markdown('<a href="https://github.com/deepakjanapa"><img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub Logo" style="width: 32px; height: 32px; filter: invert(100%);"></a>', unsafe_allow_html=True)
                 with mar[3]:
                     st.markdown('<a href="mailto:av.en.u4cse22263@av.students.amrita.edu"><img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Mail Logo" style="width: 32px; height: 32px;"></a>', unsafe_allow_html=True)
-            
+
         ###############################################################################################################################################
         sidebar(credentials2)  
         ###############################################################################################################################################
-        
+
 if __name__ == "__main__":
     main()

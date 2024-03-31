@@ -346,7 +346,7 @@ def main():
         elif selected_page == "Search":
             st.header('Search for similar movies')
             movies = pickle.load(open(r'artifacts\movie_list.pkl','rb'))
-            similarity = pickle.load(open(r'artifacts\similarity.pkl','rb'))
+            similarity = pickle.load(open(r'similarity.pkl','rb'))
 
             movie_list = movies['title'].values
             selected_movie = st.selectbox(
